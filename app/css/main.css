@@ -1,0 +1,161 @@
+/* The Household Ledger — warm paper, green ink, dense but calm. */
+* { box-sizing: border-box; }
+:root {
+  --ink: #33302a;
+  --muted: #5b6470;
+  --paper: #fffdf8;
+  --card: #ffffff;
+  --line: #e6e2d8;
+  --green: #1f7a4d;
+  --green-soft: #e3f0e8;
+  --rust: #c25e3a;
+  --amber: #c98a1b;
+  --blue: #2f5d8a;
+  --red: #b3382e;
+}
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 20px; }
+
+/* Masthead */
+.masthead {
+  background: #123524;
+  color: #f4efe4;
+  padding: 34px 0 0;
+}
+.masthead .eyebrow { margin: 0 0 8px; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: #bcd8c6; }
+.masthead h1 { margin: 0 0 10px; font-size: 46px; line-height: 1.05; letter-spacing: -0.02em; }
+.masthead .lede { margin: 0 0 22px; max-width: 900px; font-size: 18px; color: #e8e2d2; }
+.masthead nav { display: flex; flex-wrap: wrap; gap: 4px 2px; padding-bottom: 0; }
+.masthead nav a {
+  color: #e8e2d2; text-decoration: none; font-weight: 600; font-size: 15px;
+  padding: 10px 14px; border-radius: 8px 8px 0 0;
+}
+.masthead nav a:hover { background: #1d4a34; }
+.masthead nav a.active { background: var(--paper); color: var(--ink); }
+
+main { padding: 26px 0 10px; }
+h2 { font-size: 30px; line-height: 1.2; margin: 6px 0 10px; letter-spacing: -0.01em; }
+h3 { font-size: 20px; margin: 0 0 8px; }
+p { margin: 0 0 12px; }
+.page { display: none; }
+.page.active { display: block; }
+
+/* Cards & grids */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin: 0 0 18px;
+  box-shadow: 0 1px 3px rgba(51, 48, 42, .06);
+}
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.grid2 .card { margin-bottom: 18px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 18px; }
+.grid3 .card, .grid3 article { margin-bottom: 0; }
+
+/* KPIs */
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
+.kpi { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.kpi-k { font-size: 13px; color: var(--muted); font-weight: 600; }
+.kpi-v { font-size: 26px; font-weight: 800; letter-spacing: -0.01em; margin: 2px 0; color: #123524; }
+.kpi-s { font-size: 13px; color: var(--muted); }
+
+/* Findings */
+.findings { margin: 0; padding-left: 22px; }
+.findings li { margin-bottom: 8px; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 15px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.r { text-align: right; }
+tr.total td { font-weight: 700; border-top: 2px solid var(--ink); }
+.over { color: var(--red); font-weight: 700; }
+.note { font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+.standout {
+  background: var(--green-soft);
+  border-left: 5px solid var(--green);
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px;
+  font-size: 17px;
+}
+
+/* Planner split bars */
+.split-row { display: grid; grid-template-columns: 150px 1fr 400px; gap: 12px; align-items: center; margin-bottom: 14px; }
+.split-name { font-weight: 700; }
+.dot { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 8px; vertical-align: -1px; }
+.split-bar { background: #f0ede4; border-radius: 6px; height: 18px; overflow: hidden; }
+.split-bar div { height: 100%; border-radius: 6px; }
+.split-nums { font-size: 14px; color: var(--muted); }
+
+/* Forms & calculators */
+.inputs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 12px; }
+label { display: block; font-size: 14px; font-weight: 600; color: var(--muted); }
+input[type="number"], input[type="text"], select {
+  width: 100%; margin-top: 4px; padding: 9px 10px;
+  border: 1px solid #cfc9b8; border-radius: 8px; font: inherit; color: var(--ink);
+  background: #fff;
+}
+button {
+  padding: 10px 18px; border: 0; border-radius: 8px; cursor: pointer;
+  background: var(--green); color: #fff; font: inherit; font-weight: 700;
+}
+button:hover { background: #17603d; }
+form#add-tx { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 12px; align-items: end; }
+#tx-msg { font-size: 14px; color: var(--green); font-weight: 600; }
+
+/* Goals */
+.goal { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; margin-bottom: 18px; }
+.goal-bar { background: #f0ede4; border-radius: 8px; height: 16px; overflow: hidden; margin: 10px 0; }
+.goal-bar div { height: 100%; background: var(--green); border-radius: 8px; }
+.goal canvas { width: 100%; max-width: 640px; }
+
+/* Toggles & tips */
+.toggles { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 14px; }
+.toggle { font-weight: 600; color: var(--ink); font-size: 15px; }
+.toggle input { width: auto; margin-right: 6px; }
+.tip-group { margin-bottom: 22px; }
+.tip-group h3 { border-bottom: 2px solid var(--green); padding-bottom: 6px; }
+.tip { padding: 10px 0; border-bottom: 1px solid var(--line); }
+.tip h4 { margin: 0 0 4px; font-size: 16px; }
+.tip p { margin: 0 0 4px; }
+.tip .save { color: var(--green); font-size: 14px; }
+
+/* Compare cards */
+.arch { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+.arch h3 { font-size: 18px; }
+
+/* Canvas */
+canvas { display: block; width: 100%; }
+#cashflow, #split { margin-top: 8px; }
+
+footer { border-top: 1px solid var(--line); padding: 18px 0 30px; color: var(--muted); font-size: 14px; }
+
+/* Phone */
+@media (max-width: 900px) {
+  .kpis { grid-template-columns: repeat(2, 1fr); }
+  .grid2, .grid3 { grid-template-columns: 1fr; }
+  .inputs { grid-template-columns: repeat(2, 1fr); }
+  .split-row { grid-template-columns: 120px 1fr; }
+  .split-nums { grid-column: 2; }
+  form#add-tx { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+  .masthead h1 { font-size: 32px; }
+  .masthead .lede { font-size: 16px; }
+  h2 { font-size: 24px; }
+  .masthead nav a { padding: 8px 10px; font-size: 14px; }
+  .inputs { grid-template-columns: 1fr; }
+  .kpis { grid-template-columns: 1fr 1fr; }
+  .kpi-v { font-size: 21px; }
+  table { font-size: 13px; }
+  th, td { padding: 6px 6px; }
+}

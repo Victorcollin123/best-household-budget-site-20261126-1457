@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Household Ledger — budget planner, spending tracker, savings goals, debt, grocery &amp; energy calculators, household comparisons &amp; money tips</title>
+<meta name="description" content="A household budget site that works: a planner, a spending tracker, savings goals, and five calculators — with one real Lagos household's figures worked all the way through. Runs offline from its own files.">
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">A household budget site · Lagos · November 2026 · all figures in naira</p>
+    <h1>The Household Ledger</h1>
+    <p class="lede">Budget planner, spending tracker, savings goals, debt, grocery &amp; energy calculators, household comparisons &amp; money tips — built around one real household, the Okafors of Lagos (two adults, two children, ₦850,000 a month), with every figure worked through to the kobo.</p>
+    <nav>
+      <a href="#/overview" data-route="overview">Overview</a>
+      <a href="#/planner" data-route="planner">Planner</a>
+      <a href="#/tracker" data-route="tracker">Tracker</a>
+      <a href="#/goals" data-route="goals">Goals</a>
+      <a href="#/calculators" data-route="calculators">Calculators</a>
+      <a href="#/compare" data-route="compare">Compare</a>
+      <a href="#/tips" data-route="tips">Tips</a>
+      <a href="#/method" data-route="method">Method</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ============ OVERVIEW ============ -->
+<section class="page" id="page-overview">
+  <h2>Overview — November 2026, the Okafors</h2>
+  <p>One screen for the whole month: what came in, what has gone out, what is left, and what the numbers are saying. Everything below is computed from the 29 transactions in the Tracker and the budget in the Planner — change a figure there and this page moves.</p>
+  <div id="overview-kpis"></div>
+  <div class="grid2">
+    <article class="card">
+      <h3>Income vs spending, 2026</h3>
+      <p>Green is income, rust is spending. December income includes the ₦200,000 13th-month payment; June includes a ₦50,000 mid-year allowance. The household saved in every month of the year.</p>
+      <canvas id="cashflow"></canvas>
+    </article>
+    <article class="card">
+      <h3>Where the ₦850,000 goes</h3>
+      <p>Needs 68%, wants 7%, savings &amp; debt 25%. The 50/30/20 rule says 50/30/20 — Lagos rent and school fees make 50% needs unreachable, so the family squeezes wants instead of savings.</p>
+      <canvas id="split"></canvas>
+    </article>
+  </div>
+  <article class="card">
+    <h3>Five findings from November</h3>
+    <div id="overview-findings"></div>
+  </article>
+  <article class="card">
+    <h3>Budget vs spent so far — every line</h3>
+    <table id="overview-table">
+      <thead><tr><th>Category</th><th>Group</th><th class="r">Budget</th><th class="r">Spent</th><th class="r">Left</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <p class="note">Spent is summed from the Tracker rows. Rent, savings and the loan payment all left on the 1st — the "pay yourself first" rule, automated.</p>
+  </article>
+</section>
+
+<!-- ============ PLANNER ============ -->
+<section class="page" id="page-planner">
+  <h2>Planner — the monthly budget &amp; the 50/30/20 rule</h2>
+  <p>The Okafors' budget is ₦850,000 a month, split across 14 lines. The 50/30/20 rule — 50% needs, 30% wants, 20% savings — is the target; the bars below show where this household actually lands, and why.</p>
+  <article class="card">
+    <h3>Actual vs the 50/30/20 target</h3>
+    <div id="planner-split"></div>
+  </article>
+  <article class="card">
+    <h3>Try it with your own income</h3>
+    <label>Monthly take-home pay <input type="number" id="sc-income" min="0" step="5000"> </label>
+    <div id="sc-out"></div>
+  </article>
+  <article class="card">
+    <h3>The full budget — all 14 lines</h3>
+    <table id="planner-table">
+      <thead><tr><th>Category</th><th>Group</th><th class="r">Budget</th><th class="r">Share</th><th>Why this much</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <p class="note">Three worked households at three incomes are compared on the Compare page. The same 14 lines appear for each — only the numbers change.</p>
+  </article>
+</section>
+
+<!-- ============ TRACKER ============ -->
+<section class="page" id="page-tracker">
+  <h2>Tracker — every naira, written down</h2>
+  <p>29 rows so far in November, ₦689,150 in all. The chart shows each category's spending against its budget bar; anything over budget turns red. Add your own spends below — they are saved in this browser and counted at once.</p>
+  <article class="card">
+    <h3>Spending vs budget by category</h3>
+    <canvas id="catbars"></canvas>
+  </article>
+  <article class="card">
+    <h3>November transactions</h3>
+    <p><label>Show <select id="tracker-filter"></select></label> <span id="tracker-count"></span></p>
+    <table>
+      <thead><tr><th>Date</th><th>What</th><th>Category</th><th class="r">Amount</th></tr></thead>
+      <tbody id="tracker-rows"></tbody>
+    </table>
+  </article>
+  <article class="card">
+    <h3>Add a spend</h3>
+    <form id="add-tx">
+      <label>Description <input type="text" id="tx-desc" placeholder="e.g. Market — tomatoes"></label>
+      <label>Amount (₦) <input type="number" id="tx-amount" min="0" step="50" placeholder="5000"></label>
+      <label>Category <select id="tx-cat"></select></label>
+      <button type="submit">Add it</button>
+      <span id="tx-msg"></span>
+    </form>
+    <p class="note">Added rows are stored in this browser only (localStorage) — the site sends nothing anywhere, so your spending stays yours.</p>
+  </article>
+</section>
+
+<!-- ============ GOALS ============ -->
+<section class="page" id="page-goals">
+  <h2>Goals — five things the money is for</h2>
+  <p>A budget without goals is just a list of limits. Each goal has a target, a monthly amount from the budget, and a date it will be done. The emergency fund comes first — everything else waits behind it.</p>
+  <p id="goals-total" class="standout"></p>
+  <div id="goals-list"></div>
+  <article class="card">
+    <h3>How goals are ordered</h3>
+    <p>1. <b>Emergency fund</b> — three months of essential spending, because one broken fridge or one hospital visit must never become a loan. 2. <b>Rent deposit</b> — saved monthly so January never hurts. 3. <b>School fees</b> — term fees saved before the term starts, never borrowed. 4. <b>Inverter</b> — the one goal that pays for itself, by ending the generator bill. 5. <b>Holiday</b> — last, because it is a want, and wants wait.</p>
+  </article>
+</section>
+
+<!-- ============ CALCULATORS ============ -->
+<section class="page" id="page-calculators">
+  <h2>Calculators — five tools, all working</h2>
+  <p>Every calculator runs on the numbers you type. The defaults are the Okafors' own figures, so each one opens with a worked answer already in place.</p>
+
+  <article class="card">
+    <h3>1 · Emergency fund — how much, how soon</h3>
+    <div class="inputs">
+      <label>Essential spending / month (₦) <input type="number" id="ef-essentials" min="0" step="1000"></label>
+      <label>Months of cover <input type="number" id="ef-months" min="1" max="12" step="1"></label>
+      <label>Already saved (₦) <input type="number" id="ef-saved" min="0" step="1000"></label>
+      <label>Monthly contribution (₦) <input type="number" id="ef-contrib" min="0" step="1000"></label>
+    </div>
+    <div id="ef-out"></div>
+  </article>
+
+  <article class="card">
+    <h3>2 · Debt payoff — snowball vs avalanche</h3>
+    <p>Three debts: a POS/loan-app loan of ₦120,000 at 3% a month (minimum ₦12,000), a credit card of ₦250,000 at 2.5% a month (minimum ₦20,000), and a family loan of ₦180,000 at 0% (minimum ₦10,000). Minimums total ₦42,000 — the budget's debt line is ₦42,500.</p>
+    <div class="inputs">
+      <label>Extra payment / month (₦) <input type="number" id="dp-extra" min="0" step="1000"></label>
+    </div>
+    <div id="dp-out"></div>
+  </article>
+
+  <article class="card">
+    <h3>3 · Grocery budget — the weekly basket</h3>
+    <p>Lagos market prices, November 2026. The basket below is one week for a family of four; the calculator scales it to your household.</p>
+    <div class="inputs">
+      <label>People in the household <input type="number" id="gr-people" min="1" max="12" step="1"></label>
+    </div>
+    <div id="gr-out"></div>
+    <table id="gr-basket">
+      <thead><tr><th>Item</th><th class="r">Cost / week</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </article>
+
+  <article class="card">
+    <h3>4 · Energy — generator vs inverter</h3>
+    <p>A 2.5 kVA generator burns about a litre of petrol an hour. The inverter + solar set costs ₦850,000 once and lasts about five years. The calculator prices both per month.</p>
+    <div class="inputs">
+      <label>Generator hours / day <input type="number" id="en-hours" min="0" max="24" step="0.5"></label>
+      <label>Petrol price / litre (₦) <input type="number" id="en-price" min="0" step="10"></label>
+    </div>
+    <div id="en-out"></div>
+  </article>
+
+  <article class="card">
+    <h3>5 · Subscription audit — what are you really paying for?</h3>
+    <p>Seven subscriptions, ₦77,500 a month before the October cut. Tick what you would keep — the total updates live.</p>
+    <div id="sub-toggles" class="toggles"></div>
+    <table id="sub-list">
+      <thead><tr><th>Service</th><th class="r">Cost / mo</th><th>Status</th><th>Why</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div id="sub-out"></div>
+  </article>
+</section>
+
+<!-- ============ COMPARE ============ -->
+<section class="page" id="page-compare">
+  <h2>Compare — three households, one set of rules</h2>
+  <p>The same 14 budget lines at three incomes. Rent share falls as income rises; school fees bite hardest in the middle. The lesson is not that one household is better — it is that the <i>method</i> (write it down, pay yourself first, audit the leaks) works at every income.</p>
+  <article class="card">
+    <h3>Headline comparison</h3>
+    <table id="compare-table">
+      <thead><tr><th>Household</th><th class="r">Income / mo</th><th class="r">Rent</th><th class="r">Food</th><th class="r">Saves</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </article>
+  <div id="compare-cards" class="grid3"></div>
+  <article class="card">
+    <h3>Before vs after — the Okafors' October review</h3>
+    <p>One evening with the Tracker open found real money. Nothing here needed a pay rise.</p>
+    <table id="before-after">
+      <thead><tr><th>Line</th><th class="r">Before / mo</th><th class="r">After / mo</th><th class="r">Found</th><th>How</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <p id="before-total" class="standout"></p>
+  </article>
+</section>
+
+<!-- ============ TIPS ============ -->
+<section class="page" id="page-tips">
+  <h2>Tips — 24 ways to keep more of it</h2>
+  <p id="tips-total" class="standout"></p>
+  <div id="tips-list"></div>
+</section>
+
+<!-- ============ METHOD ============ -->
+<section class="page" id="page-method">
+  <h2>Method — where every figure comes from</h2>
+  <article class="card">
+    <h3>The household</h3>
+    <p>The Okafors are a worked example, not a real family: two adults, two children (9 and 6), a two-bedroom flat in Surulere, Lagos. Combined take-home pay ₦850,000 a month — salaries ₦700,000 and weekend catering income ₦150,000. Their budget, transactions, goals, debts and subscriptions are one consistent set of books: the Tracker rows add up to the Overview totals, the grocery basket multiplies out to the food budget, and the subscription audit adds up to the subscriptions line.</p>
+  </article>
+  <article class="card">
+    <h3>Prices &amp; assumptions</h3>
+    <ul>
+      <li>Market prices are Lagos prices in November 2026: petrol ₦1,050 a litre, rice about ₦1,750 a kilo, a 40 GB data bundle ₦12,500.</li>
+      <li>The 50/30/20 rule is the target; the Okafors land at 68/7/25 because rent (₦170,000) and school fees (₦85,000) are fixed. The Planner page shows the gap honestly instead of pretending the target was met.</li>
+      <li>The grocery basket is one week for four people at ₦29,375; a month is 4.33 weeks, giving ₦127,194 — the ₦127,500 food budget.</li>
+      <li>The generator burns about 1 litre an hour; the inverter set is ₦850,000 with a five-year life and ₦2,000 a month upkeep.</li>
+      <li>Debt interest is charged monthly on the remaining balance, then minimums and the extra payment are applied — the payoff calculator simulates month by month, it does not use a formula.</li>
+      <li>Cash flow for December is projected; January to November is the year's record, November to the 26th.</li>
+    </ul>
+  </article>
+  <article class="card">
+    <h3>What this site does not do</h3>
+    <p>It gives no investment advice and no loan offers. It stores nothing on a server — added transactions live in your own browser. Figures are a worked example for a Lagos household in November 2026; your rent, your prices and your pay will differ, and the calculators are there so you can put your own numbers in.</p>
+  </article>
+  <article class="card">
+    <h3>About this site</h3>
+    <p>The Household Ledger is an original site built for the make.fun bounty "Make the best household budget site". It runs offline from its own files — no network request, no build step, no tracker. Charts are hand-drawn on canvas; there are no libraries.</p>
+  </article>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <p>The Household Ledger — an original household budget site. Figures are a worked example for a Lagos household, November 2026. Built for the make.fun bounty "Make the best household budget site".</p>
+</footer>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
